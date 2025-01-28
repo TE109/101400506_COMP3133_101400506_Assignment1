@@ -3,16 +3,32 @@ const mongoose = require('mongoose');
 
 const EmployeeSchema = mongoose.Schema(
     {
-        "_id": mongoose.Schema.Types.ObjectId,
-        "first_name": String,
-        "last_name": String,
-        "email": String,
-        "gender": String,
-        "designation": String,
-        "salary": Number,
-        "date_of_joining": Date,
+        "first_name":  {
+            type: String,
+            required: true
+        },
+        "last_name":  {
+            type: String,
+            required: true
+        },
+        "email" : {
+            type: String,
+            unique: true
+        },
+        "gender": { 
+            type: String, 
+            enum: ['Male', 'Female', 'Other'], 
+            required: true 
+        },
+        "designation": { type: String, required: true },
+        salary: { 
+            type: Number, 
+            required: true, 
+            min: [1000] 
+        },
+        date_of_joining: { type: Date, required: true },
         "employee_photo": Date,
-        "department": String,
+        "department": { type: String, required: true },
         "created_at": Date,
         "updated_at": Date
        }       

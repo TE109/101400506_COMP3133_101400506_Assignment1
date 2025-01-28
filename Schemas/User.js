@@ -2,9 +2,14 @@ const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema(
     {
-        "_id": mongoose.Schema.Types.ObjectId,
-        "username": String,
-        "email": String,
+        "username":{
+            type: String,
+            index: true
+        },
+        "email": {
+            type: String,
+            unique: true
+        },
         "password": String, // This should be hashed
         "created_at": Date,
         "updated_at": Date
@@ -12,4 +17,4 @@ const UserSchema = mongoose.Schema(
 );
 
 const UserModel = mongoose.model("User",UserSchema);
-module.exports = UserModel;
+module.exports = UserModel; 
