@@ -1,0 +1,25 @@
+{
+  "name": "101400506_comp3133_101400506_assignment1",
+  "version": "1.0.0",
+  "description": "\"# 101400506_COMP3133_101400506_Assignment1\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TE109/101400506_COMP3133_101400506_Assignment1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TE109/101400506_COMP3133_101400506_Assignment1/issues"
+  },
+  "homepage": "https://github.com/TE109/101400506_COMP3133_101400506_Assignment1#readme",
+  "dependencies": {
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.5"
+  }
+}
