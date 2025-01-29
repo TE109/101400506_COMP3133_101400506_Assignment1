@@ -27,7 +27,7 @@ const EmployeeSchema = mongoose.Schema(
             min: [1000] 
         },
         date_of_joining: { type: Date, required: true },
-        "employee_photo": Date,
+        "employee_photo": String,
         "department": { type: String, required: true },
         "created_at": Date,
         "updated_at": Date

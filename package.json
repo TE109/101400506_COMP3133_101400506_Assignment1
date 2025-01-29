@@ -4,9 +4,8 @@
   "description": "\"# 101400506_COMP3133_101400506_Assignment1\"",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --exit-child index.ts",
-    "start": "ts-node index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "ts-node-dev --exit-child src/index.ts",
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
