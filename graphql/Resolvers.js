@@ -5,39 +5,46 @@ const crypto = require('crypto');
 const resolvers = {
     // Resolver for Signup and Login 
     // TODO Revice Clarification on Return and Purpose of Login & Signup 
-    signup: async ({username, email, password}) => {
+    signup: async ({ username, email, password }) => {
         try {
+            const hashedPassword = crypto.createHash('md5').update(password).digest('hex');
+    
             const newUser = new User({
                 username,
                 email,
-                password: crypto.createHash('md5').update(password).digest('hex'),
+                password: hashedPassword,
                 created_at: new Date(),
                 updated_at: new Date(),
-              });
-
-              await newUser.save();
-
-                return "User Created"
-        } 
-        catch(error) {
-            return Error(error.message)
+            });
+    
+            await newUser.save(); 
+            return {
+                message: "User Created"
+            }
+        } catch (error) {
+            throw new Error(error.message); 
         }
     },
+    
 
-    login: async ({email, password}) => {
+    login: async ({ email, password }) => {
         try {
-            const user = User.findOne({email})
-            const hashpassword = crypto.createHash('md5').update(password).digest('hex')
+            const user = await User.findOne({ email });     
+            if (user == null) {
+                throw new Error("User not found");
+            }    
+            const hashedPassword = crypto.createHash('md5').update(password).digest('hex');
             if (hashedPassword !== user.password) {
                 throw new Error("Invalid credentials");
-              }
-            
-            return true
-        } 
-        catch(error) {
-            return Error(error.message)
+            }    
+            return {
+                message: "Login successful"
+            };
+        } catch (error) {
+            throw new Error(error.message); 
         }
     },
+    
 
     /*
     Resolver Function for Getting all Employes
@@ -86,7 +93,6 @@ const resolvers = {
             })
             
             newEmp.save()
-
             return true
         } catch (error) {
             return Error("Couldnt Add the Employee " + error.message)
@@ -182,3 +188,4 @@ const resolvers = {
     }
 }
 
+module.exports = resolvers;

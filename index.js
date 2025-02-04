@@ -16,7 +16,7 @@ mongoose.connection.once("open", () => {
 });
 
 app.use(
-  "/",
+  "/graphql",
   graphqlHTTP({
     schema,
     rootValue: resolvers,

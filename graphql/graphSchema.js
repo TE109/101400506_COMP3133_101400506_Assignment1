@@ -24,6 +24,7 @@ const schema = buildSchema(`
     created_at: String
     updated_at: String
   }
+    
 
   type Query {
     login(email: String!, password: String!): User
