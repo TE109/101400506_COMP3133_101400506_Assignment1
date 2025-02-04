@@ -16,5 +16,7 @@ const UserSchema = mongoose.Schema(
        }
 );
 
+// Note to Self add Validate User Static Function 
+
 const UserModel = mongoose.model("User",UserSchema);
 module.exports = UserModel; 
