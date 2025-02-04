@@ -46,7 +46,7 @@ const resolvers = {
     */
     getAllEmployees: async () => {
         try {
-            const employees = Employee.find()
+            const employees = await Employee.find()
             return employees
         } catch (error) {
             return Error("Coudnt Retrive Employees " + error.message)
@@ -156,7 +156,7 @@ const resolvers = {
         const employee = Employee.findByIdAndRemove(id)
         return true
     } catch (error) {
-        return Error("Couldnt Delate the Employee " + error.message)  
+        return Error("Couldnt Delete the Employee " + error.message)  
     }
 },
 
