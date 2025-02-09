@@ -1,20 +1,15 @@
 const User = require("../Schemas/User");
 const Employee = require("../Schemas/Employee");
 const crypto = require('crypto');
-const { body, validationResult } = require("express-validator");
+const { check, validationResult } = require('express-validator');
 
 const resolvers = {
     signup: async ({ username, email, password }) => {
-
-        const errors = validationResult({
-            username: body("username").notEmpty().withMessage("Username is required"),
-            email: body("email").isEmail().withMessage("Invalid email format"),
-            password: body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
-        });
-
-        if (!errors.isEmpty()) {
-            throw new Error(JSON.stringify(errors.array()));
-        }
+        const errors = validationResult({ body: { username, email, password } });
+        if (errors.isEmpty() == false) throw new Error(JSON.stringify(errors.array()));
+        if (!username) throw new Error("Username is required");
+        if (!email) throw new Error("Email is required");
+        if (!password) throw new Error("Password is required");
 
         try {
             const hashedPassword = crypto.createHash('md5').update(password).digest('hex');
@@ -38,6 +33,11 @@ const resolvers = {
     
 
     login: async ({ email, password }) => {
+        const errors = validationResult({ body: { email, password } });
+        if (errors.isEmpty() == false) throw new Error(JSON.stringify(errors.array()));
+        if (!email) throw new Error("Email is required");
+        if (!password) throw new Error("Password is required");
+
         try {
             const user = await User.findOne({ email });     
             if (user == null) {
@@ -58,22 +58,18 @@ const resolvers = {
 
     /*
     Resolver Function for Getting all Employes
-    Query
-    Returns an array of Employees 
     */
     getAllEmployees: async () => {
         try {
             const employees = await Employee.find()
             return employees
         } catch (error) {
-            return Error("Coudnt Retrive Employees " + error.message)
+            throw new Error("Coudnt Retrive Employees " + error.message)
         }
     },
 
     /*
     Resolver Function for Adding an Employes
-    Mutation 
-    Returns True if the Employee is created 
     */
     addEmployee: async (
         {
@@ -86,7 +82,7 @@ const resolvers = {
             date_of_joining,
             employee_photo,
             department
-        }) => {
+        }) => {            
         try {
             const newEmp = Employee({
                 first_name,
@@ -103,16 +99,14 @@ const resolvers = {
             })
             
             newEmp.save()
-            return true
+            return newEmp
         } catch (error) {
-            return Error("Couldnt Add the Employee " + error.message)
+            throw new Error("Couldnt Add the Employee " + error.message)
         }
     },
 
     /*
     Reslover Function For Finding an employee by their ID
-    Query
-    Returns the Employee
     */
 
     getEmployeeById: async({id}) => {
@@ -120,14 +114,12 @@ const resolvers = {
             const employee = Employee.findById(id)
             return employee
         } catch (error) {
-            return Error("Couldnt Retrive the Employee " + error.message)  
+            throw new Error("Couldnt Retrive the Employee " + error.message)  
         }
     },
 
     /*
     Reslover Function For Updating an employee by their ID
-    Mutation
-    Returns True if update was succseful 
     */
 
     updateEmployee: async({id, 
@@ -141,7 +133,7 @@ const resolvers = {
             employee_photo,
             department
         }) => {
-        try {
+            try {
             const employee = Employee.findByIdAndUpdate(id,{
                 first_name,
                 last_name,
@@ -155,31 +147,27 @@ const resolvers = {
                 updated_at: new Date(),
             }
             )
-            return true
+            return employee
         } catch (error) {
-            return Error("Couldnt Update the Employee " + error.message)  
+            throw new Error("Couldnt Update the Employee " + error.message)  
         }
     },
     
     /*
-    Reslover Function For Delting an employee by their ID
-    Mutation
-    Returns True if Delation was succseful 
+    Reslover Function For Delting an employee by their ID 
     */
     deleteEmployee: async({id
     }) => {
-    try {
-        const employee = Employee.findByIdAndRemove(id)
-        return true
-    } catch (error) {
-        return Error("Couldnt Delete the Employee " + error.message)  
+        try {
+            const employee = Employee.findByIdAndDelete(id)
+            return employee
+        } catch (error) {
+            return Error("Couldnt Delete the Employee " + error.message)  
     }
 },
 
 /*
     Reslover Function For Finding an employee by their designation or department
-    Query
-    Returns Employee if succseful 
     */
     getEmployeeDesignationOrDepartment: async ({ designation, department }) => {
         try {
