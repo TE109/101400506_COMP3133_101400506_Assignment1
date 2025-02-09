@@ -1,11 +1,21 @@
 const User = require("../Schemas/User");
 const Employee = require("../Schemas/Employee");
 const crypto = require('crypto');
+const { body, validationResult } = require("express-validator");
 
 const resolvers = {
-    // Resolver for Signup and Login 
-    // TODO Revice Clarification on Return and Purpose of Login & Signup 
     signup: async ({ username, email, password }) => {
+
+        const errors = validationResult({
+            username: body("username").notEmpty().withMessage("Username is required"),
+            email: body("email").isEmail().withMessage("Invalid email format"),
+            password: body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
+        });
+
+        if (!errors.isEmpty()) {
+            throw new Error(JSON.stringify(errors.array()));
+        }
+
         try {
             const hashedPassword = crypto.createHash('md5').update(password).digest('hex');
     

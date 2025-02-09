@@ -10,7 +10,7 @@ const UserSchema = mongoose.Schema(
             type: String,
             unique: true
         },
-        "password": String, // This should be hashed
+        "password": String, 
         "created_at": Date,
         "updated_at": Date
        }
