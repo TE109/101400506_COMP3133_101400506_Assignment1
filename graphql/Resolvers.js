@@ -1,7 +1,7 @@
 const User = require("../Schemas/User");
 const Employee = require("../Schemas/Employee");
 const crypto = require('crypto');
-const { check, validationResult } = require('express-validator');
+const {validationResult } = require('express-validator');
 
 const resolvers = {
     signup: async ({ username, email, password }) => {
@@ -171,14 +171,7 @@ const resolvers = {
     */
     getEmployeeDesignationOrDepartment: async ({ designation, department }) => {
         try {
-          let employees;  
-          if (designation != null) {
-            employees = await Employee.find(designation);
-          }  
-          if (department != null) {
-            employees = await Employee.find(department);
-          }
-          
+          let employees = await Employee.find(designation, department);            
           return employees;
         } catch (error) {
           throw new Error("Error fetching employees: " + error.message);
